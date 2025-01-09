@@ -180,8 +180,7 @@ Features
     Foundry Test Suite
         Comes with a test suite for Foundry to verify key functionalities.
 
-Code Explanation
-1. State Variables
+# State Variables
 _nextBadgeId
 
     Tracks the next available token ID.
@@ -212,7 +211,7 @@ _baseBadgeUri
 
     The base URI used to fetch metadata for the tokens.
 
-2. Constructor
+# Constructor
 
 The constructor initializes the contract with:
 
@@ -220,8 +219,7 @@ The constructor initializes the contract with:
     symbol_: The symbol of the token collection.
     baseBadgeUri_: The base URI for metadata.
 
-Example:
-
+```solidity
 constructor(
     string memory name_,
     string memory symbol_,
@@ -230,8 +228,10 @@ constructor(
     _baseBadgeUri = baseBadgeUri_;
     _nextBadgeId = 1;
 }
+```
 
-3. Functions
+# Functions
+
 safeMint
 
     Mints a new Soulbound Token and associates it with a user profile.
@@ -259,17 +259,19 @@ _beforeTokenTransfer
     Enforces the soulbound property by restricting transfers.
     Reverts if the from address is not zero (address(0)), ensuring tokens can only be minted.
 
-Foundry Integration
-Prerequisites
+# Foundry Integration
 
     Install Foundry:
-
+```bash
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
+```
 
 Install dependencies:
 
-    forge install OpenZeppelin/openzeppelin-contracts
+```bash
+forge install OpenZeppelin/openzeppelin-contracts
+```
 
 Foundry Test Suite
 
@@ -281,84 +283,7 @@ Create a test file named SoulBadgerTest.t.sol in the test directory. The followi
     Soulbound Enforcement
         Ensures that tokens cannot be transferred after minting.
 
-Test Contract: SoulBadgerTest.t.sol
 
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
-
-import "forge-std/Test.sol";
-import "../src/SoulBadger.sol";
-
-contract SoulBadgerTest is Test {
-    SoulBound soulBadger;
-
-    address public owner = address(0xABCD);
-    address public user = address(0x1234);
-
-    function setUp() public {
-        soulBadger = new SoulBound(
-            "SoulBadger",
-            "SBG",
-            "https://example.com/metadata/"
-        );
-    }
-
-    function testSafeMint() public {
-        soulBadger.safeMint(
-            user,
-            "HeroicMage",
-            "Mage",
-            10, // Level
-            100, // Health
-            50, // Stamina
-            20, // Strength
-            30, // Intelligence
-            25  // Dexterity
-        );
-
-        // Verify owner of the token
-        assertEq(soulBadger.ownerOf(1), user);
-
-        // Retrieve user identity
-        (
-            string memory username,
-            string memory classType,
-            uint32 level,
-            uint32 health,
-            uint32 stamina,
-            uint32 strength,
-            uint32 intelligence,
-            uint32 dexterity
-        ) = soulBadger.getUserIdentity(1);
-
-        assertEq(username, "HeroicMage");
-        assertEq(classType, "Mage");
-        assertEq(level, 10);
-        assertEq(health, 100);
-        assertEq(stamina, 50);
-        assertEq(strength, 20);
-        assertEq(intelligence, 30);
-        assertEq(dexterity, 25);
-    }
-
-    function testSoulboundBehavior() public {
-        soulBadger.safeMint(
-            user,
-            "HeroicMage",
-            "Mage",
-            10, // Level
-            100, // Health
-            50, // Stamina
-            20, // Strength
-            30, // Intelligence
-            25  // Dexterity
-        );
-
-        vm.prank(user);
-        vm.expectRevert("Err: token transfer is BLOCKED");
-        soulBadger.transferFrom(user, owner, 1);
-    }
-}
 
 Running Tests
 
