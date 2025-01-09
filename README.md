@@ -295,15 +295,11 @@ Run the tests:
 
     forge test
 
-Deployment
+
+# Deployment
 
 To deploy the contract using Foundry’s forge create:
-
+```bash
 forge create --rpc-url <YOUR_RPC_URL> --private-key <YOUR_PRIVATE_KEY> src/SoulBadger.sol:SoulBound
-
-Replace <YOUR_RPC_URL> and <YOUR_PRIVATE_KEY> with your configuration.
-License
-
-This project is licensed under the MIT License.
-
-This project is licensed under the MIT License.
+```
+Replace <YOUR_RPC_URL> and <YOUR_PRIVATE_KEY> with your configuration
