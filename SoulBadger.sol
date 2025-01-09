@@ -1,16 +1,13 @@
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-// Make sure you have OpenZeppelin v5.x installed:
-// npm install @openzeppelin/contracts@latest
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract SoulBound is ERC721 {
-    // incrementing badge ID
+    // Incrementing badge ID
     uint256 private _nextBadgeId;
 
-    // user identity with eight fields (two strings + six uint32)
+    // User identity with eight fields (two strings + six uint32)
     struct UserIdentity {
         string username;      
         string class;
@@ -28,10 +25,10 @@ contract SoulBound is ERC721 {
     // badgeId => owner
     mapping(uint256 => address) private _badgeOwners;
 
-    // base URI for metadata
+    // Base URI for metadata
     string private _baseBadgeUri;
 
-    // optional metadata format
+    // Optional metadata format
     string private constant _metadataFormat = "ERC-5484";
 
     constructor(
@@ -40,10 +37,10 @@ contract SoulBound is ERC721 {
         string memory baseBadgeUri_
     ) ERC721(name_, symbol_) {
         _baseBadgeUri = baseBadgeUri_;
-        _nextBadgeId = 1; // start IDs at 1
+        _nextBadgeId = 1; // Start IDs at 1
     }
 
-    // mint soulbound badge with eight fields
+    // Mint soulbound badge with eight fields
     function safeMint(
         address to,
         string memory username,
@@ -58,7 +55,7 @@ contract SoulBound is ERC721 {
         uint256 badgeId = _nextBadgeId++;
         _safeMint(to, badgeId);
 
-        // store identity data
+        // Store identity data
         _userIdentities[badgeId] = UserIdentity(
             username,
             class_,
@@ -70,11 +67,11 @@ contract SoulBound is ERC721 {
             dexterity
         );
 
-        // track ownership in custom mapping
+        // Track ownership in custom mapping
         _badgeOwners[badgeId] = to;
     }
 
-    // retrieve all eight fields of user identity
+    // Retrieve all eight fields of user identity
     function getUserIdentity(uint256 badgeId)
         external
         view
@@ -104,24 +101,25 @@ contract SoulBound is ERC721 {
         );
     }
 
-    // override ownerOf to use _badgeOwners
+    // Override ownerOf to use _badgeOwners
     function ownerOf(uint256 badgeId) public view override returns (address) {
         address owner = _badgeOwners[badgeId];
         require(owner != address(0), "Owner query for nonexistent token");
         return owner;
     }
 
-    // optional base URI for metadata
+    // Optional base URI for metadata
     function _baseURI() internal view override returns (string memory) {
         return _baseBadgeUri;
     }
 
+    // Prevent transfers to enforce soulbound behavior
     function _beforeTokenTransfer(
-    address from, 
-    address to, 
-    uint256 tokenId
+        address from,
+        address /* to */,
+        uint256 /* tokenId */,
+        uint256 /* batchSize */
     ) internal virtual {
-    require(from == address(0), "Err: token transfer is BLOCKED"); 
-    _beforeTokenTransfer(from, to, tokenId);  
+        require(from == address(0), "Err: token transfer is BLOCKED");
     }
 }
