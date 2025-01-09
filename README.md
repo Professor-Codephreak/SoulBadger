@@ -2,7 +2,7 @@
 
 SoulBadger is a Solidity smart contract derived from erc-5484 to implement a Soulbound Token (SBT) system using the ERC721 NFT standard. Soulbound Tokens are non-transferable NFTs designed to represent permanent and unique user attributes. This contract, tailored for deployment and testing using Foundry, provides a robust implementation of the concept with rich user profiles and strict transfer restrictions. SoulBadger is a SoulBound Badge creation NFT contract.
 
-![SoulBadger](./gfx/SoulBadger.jpg)
+![SoulBadger](SoulBadger.jpg)
 
 # Features
 
