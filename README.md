@@ -303,3 +303,17 @@ To deploy the contract using Foundry’s forge create:
 forge create --rpc-url <YOUR_RPC_URL> --private-key <YOUR_PRIVATE_KEY> src/SoulBadger.sol:SoulBound
 ```
 Replace <YOUR_RPC_URL> and <YOUR_PRIVATE_KEY> with your configuration
+
+# Practical Application of SoulBadger
+
+In the SoulBadger contract, the UserIdentity struct has the following fields:
+
+```solidity
+    string username (dynamic)
+    string classType (dynamic)
+    uint32 level, uint32 health, uint32 stamina, uint32 strength, uint32 intelligence, uint32 dexterity (fixed)
+```
+By packing the six uint32 fields into a single slot:
+
+    Gas savings are achieved for all operations involving level, health, stamina, strength, intelligence, and dexterity.
+    The username and classType strings still require separate slots due to their dynamic nature.
