@@ -110,9 +110,7 @@ _beforeTokenTransfer
 
 # Foundry Integration
 
-Prerequisites
-
-    Install Foundry:
+Install Foundry:
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
